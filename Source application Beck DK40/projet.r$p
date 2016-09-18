@@ -1,0 +1,15 @@
+/Tde/x/l/v/c/3/k /V3.10 /LC:\BC5\LIB +
+-v+ C:\BC5\LIB\c0l.obj+
+-v+ rs232.obj+
+-v+ RFIDGR~1.OBJ+
+-v+ pio.obj+
+-v+ serrure.obj+
+-v+ client.obj+
+-v+ beckdk40.obj+
+-v+ projet.obj
+projet.exe
+
+-v+ libs\clibV270\clib270l.lib+
+-v+ C:\BC5\LIB\noehl.lib+
+-v+ C:\BC5\LIB\cl.lib
+

@@ -1,0 +1,131 @@
+;******************************************************************************
+;
+; (c) 2007-2010 by BECK IPC GmbH
+; http://www.beck-ipc.com
+;
+;******************************************************************************
+;
+; Module:     tcpipapi.def
+; Function:   Include file for TCP/IP CLIB API
+;             Several constants and macros are defined here  
+;
+;
+;******************************************************************************
+;
+; $Header$
+;
+;******************************************************************************
+
+
+;******************************************************************************
+; Constants
+;******************************************************************************
+; Sofware interrupt number
+TCPIP_SWI                          EQU  0ACh
+
+
+; Contents of AX register for linking the respective functions
+
+TCPIP_DYN_LINK_Crypt_3DES_Decrypt           EQU 0
+TCPIP_DYN_LINK_Crypt_3DES_Encrypt           EQU 1
+TCPIP_DYN_LINK_Crypt_3DES_MakeKey           EQU 2
+
+TCPIP_DYN_LINK_Crypt_AES_Decrypt            EQU 3
+TCPIP_DYN_LINK_Crypt_AES_Encrypt            EQU 4
+TCPIP_DYN_LINK_Crypt_AES_MakeDecryptKey     EQU 5
+TCPIP_DYN_LINK_Crypt_AES_MakeEncryptKey     EQU 6
+
+TCPIP_DYN_LINK_Crypt_Blowfish_Decrypt       EQU 7
+TCPIP_DYN_LINK_Crypt_Blowfish_Encrypt       EQU 8
+TCPIP_DYN_LINK_Crypt_Blowfish_MakeKey       EQU 9
+
+TCPIP_DYN_LINK_Crypt_BN_Div                 EQU 10
+TCPIP_DYN_LINK_Crypt_BN_Mod_Exp             EQU 11
+TCPIP_DYN_LINK_Crypt_BN_Mod_Inverse         EQU 12
+TCPIP_DYN_LINK_Crypt_BN_Mod_Mul             EQU 13
+TCPIP_DYN_LINK_Crypt_BN_Mul                 EQU 14
+
+TCPIP_DYN_LINK_Crypt_DES_Decrypt            EQU 15
+TCPIP_DYN_LINK_Crypt_DES_Encrypt            EQU 16
+TCPIP_DYN_LINK_Crypt_DES_MakeKey            EQU 17
+
+TCPIP_DYN_LINK_Crypt_MD5_Init               EQU 18
+TCPIP_DYN_LINK_Crypt_MD5_Update             EQU 19
+TCPIP_DYN_LINK_Crypt_MD5_Final              EQU 20
+
+TCPIP_DYN_LINK_Crypt_SHA1_Init              EQU 21
+TCPIP_DYN_LINK_Crypt_SHA1_Update            EQU 22
+TCPIP_DYN_LINK_Crypt_SHA1_Final             EQU 23
+
+TCPIP_DYN_LINK_Crypt_Random_Bytes           EQU 24
+
+TCPIP_DYN_LINK_accept_bsd                   EQU 25
+TCPIP_DYN_LINK_bind_bsd                     EQU 26
+TCPIP_DYN_LINK_connect_bsd                  EQU 27
+TCPIP_DYN_LINK_close_bsd                    EQU 28
+TCPIP_DYN_LINK_getsockopt_bsd               EQU 29
+TCPIP_DYN_LINK_inet_addr_bsd                EQU 30
+TCPIP_DYN_LINK_listen_bsd                   EQU 31
+TCPIP_DYN_LINK_recv_bsd                     EQU 32
+TCPIP_DYN_LINK_recvfrom_bsd                 EQU 33
+TCPIP_DYN_LINK_send_bsd                     EQU 34
+TCPIP_DYN_LINK_sendto_bsd                   EQU 35
+TCPIP_DYN_LINK_shutdown_bsd                 EQU 36
+TCPIP_DYN_LINK_setsockopt_bsd               EQU 37
+TCPIP_DYN_LINK_recvFromTo_Link              EQU 38
+TCPIP_DYN_LINK_get_socketerror_Dyn          EQU 39
+TCPIP_DYN_LINK_sendto_iface_Link            EQU 40
+TCPIP_DYN_LINK_socket                       EQU 41
+TCPIP_DYN_LINK_Dev_Set_IfaceMTU             EQU 42
+
+TCPIP_DYN_LINK_Crypt_SHA256_Init            EQU 43
+TCPIP_DYN_LINK_Crypt_SHA256_Update          EQU 44
+TCPIP_DYN_LINK_Crypt_SHA256_Final           EQU 45
+
+TCPIP_DYN_LINK_Crypt_RSA_Sign               EQU 46
+TCPIP_DYN_LINK_Crypt_RSA_Verify             EQU 47
+TCPIP_DYN_LINK_Crypt_RSA_GetKeySize         EQU 48
+
+TCPIP_DYN_LINK_DEV_GET_IP              EQU 09Fh
+TCPIP_DYN_LINK_DEV_OPEN_INTERFACE      EQU 0A0h
+TCPIP_DYN_LINK_DEV_CLOSE_INTERFACE     EQU 0A1h
+TCPIP_DYN_LINK_DEV_RECV_INTERFACE      EQU 0A2h
+TCPIP_DYN_LINK_DEV_RECV_WAIT           EQU 0A3h
+TCPIP_DYN_LINK_DEV_NOTIFY_ISR          EQU 0A4h
+TCPIP_DYN_LINK_DEV_GET_BUFFER          EQU 0A5h
+TCPIP_DYN_LINK_DEV_SEND_COMPLETE       EQU 0A6h
+TCPIP_DYN_LINK_DEV_WAIT_DHCP_COMPLETE  EQU 0A7h
+TCPIP_DYN_LINK_DEV_PPP_REGISTER_CHAP   EQU 0A8h
+TCPIP_DYN_LINK_DEV_PPP_REGISTER_PAP    EQU 0A9h
+TCPIP_DYN_LINK_DEV_PPP_SET_OPTION      EQU 0AAh
+TCPIP_DYN_LINK_DEV_PPP_GET_PEER_IP     EQU 0ABh
+TCPIP_DYN_LINK_DEV_PPP_GET_PEER_DNSIP  EQU 0ACh
+TCPIP_DYN_LINK_DEV_GET_HANDLE_BY_NAME  EQU 0ADh
+TCPIP_DYN_LINK_DEV_CONFIG_IFACE        EQU 0AEh
+TCPIP_DYN_LINK_DEV_CONFIG_IFACE_IPV6   EQU 0AFh
+TCPIP_DYN_LINK_DEV_UNCONFIG_IFACE      EQU 0B0h
+TCPIP_DYN_LINK_DEV_PPP_GET_PEER_IPV6   EQU 0B1h
+
+
+;******************************************************************************
+; The following macro defines a 5 byte sequence of code that the Dynamic Linker
+; will replace with a FAR JMP.
+;
+; The issue here was to construct this code so that it is re-entrant during 
+; possible code modification by the run-time linker. This re-entrancy was 
+; achieved by placing only a single executable instruction within the patch
+; region.
+;******************************************************************************
+LINKER_PATCH  MACRO
+  LOCAL over_patch
+
+  JMP SHORT over_patch  ; If this instruction is started, then it will complete! 
+  NOP                   ; Never execute here 
+  NOP                   ; Never execute here
+  NOP                   ; Never execute here
+over_patch:
+ENDM
+
+
+
+; End of file

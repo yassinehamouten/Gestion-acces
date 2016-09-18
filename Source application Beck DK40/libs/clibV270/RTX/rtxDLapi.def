@@ -1,0 +1,56 @@
+;******************************************************************************
+;
+; (c) 2010 by BECK IPC GmbH
+; http://www.beck-ipc.com
+;
+;******************************************************************************
+;
+; Module:     rtxDLapi.def
+; Function:   Include file for RTX dynamic link API
+;
+;
+;******************************************************************************
+;
+; $Header$
+;
+;******************************************************************************
+
+
+
+;******************************************************************************
+; Constants
+;******************************************************************************
+; Sofware interrupt number
+RTX_SWI                          EQU  0ADh
+
+DYN_LINK_SERVICE  EQU  (02700h)      ; Positioned for AH register
+
+; Contents of AX register for linking the resp. functions
+IDX_RTX_Get_TimeDate_us  EQU     DYN_LINK_SERVICE + 00h
+IDX_RTX_Set_TimeDate_us  EQU     DYN_LINK_SERVICE + 01h
+IDX_RTX_Publish          EQU     DYN_LINK_SERVICE + 02h
+IDX_RTX_GetPublication   EQU     DYN_LINK_SERVICE + 03h
+
+
+;******************************************************************************
+; The following macro defines a 5 byte sequence of code that the Dynamic Linker
+; will replace with a FAR JMP.
+;
+; The issue here was to construct this code so that it is re-entrant during 
+; possible code modification by the run-time linker. This re-entrancy was 
+; achieved by placing only a single executable instruction within the patch
+; region.
+;******************************************************************************
+LINKER_PATCH  MACRO
+  LOCAL over_patch
+
+  JMP SHORT over_patch  ; If this instruction is started, then it will complete! 
+  NOP                   ; Never execute here 
+  NOP                   ; Never execute here
+  NOP                   ; Never execute here
+over_patch:
+ENDM
+
+
+
+; End of file

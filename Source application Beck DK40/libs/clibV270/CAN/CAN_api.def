@@ -1,0 +1,70 @@
+;/****************************************************************************
+;* (C) 1999-2005 by BECK IPC GmbH
+;*
+;*  BECK IPC GmbH
+;*  Germany
+;*  
+;*  http://www.beck-ipc.com
+;*
+;* ---------------------------------------------------------------------------
+;*  Abstract:  CAN Bus Driver API library assembly
+;*
+;* ---------------------------------------------------------------------------
+;   $Header: CAN_api.def$
+;   $Log:$
+;
+;****************************************************************************/
+
+
+CAN_SWI           EQU  0BFh      ; Software Interrupt number (shared with USB)
+
+CAN_API_DYN_LINK  EQU  8000h    ; AH reg service index (after USB series)
+
+
+   ;////////////////////////////////////////////////////
+   ;// Macro defines 5 byte sequence of code that the
+   ;// Dynamic Linker will replace with a FAR JMP.
+   ;//
+   ;//  The issue here was to construct this code so
+   ;//  that it is re-entrant during possible code
+   ;//  modification by the run-time linker.  This 
+   ;//  re-entrancy was achieved by placing only
+   ;//  a single executable instruction within the
+   ;//  patch region.
+   ;/////////////////////////////////////////////////////
+
+LINKER_PATCH  MACRO
+    LOCAL over_patch
+
+    ; To assure code is re-entrant, place no interruptable
+    ;  instruction boundaries within 5 byte patch region
+    ;  where Dynamic Linker will write the "JMP FAR INTO_RTOS"
+    ;  opcodes.
+    jmp short over_patch  ;  (2 bytes) If start this instruction, then
+                    ;      it will complete! 
+    NOP             ; Never execute here 
+    NOP             ; Never execute here
+    NOP             ; Never execute here
+over_patch:
+    ENDM
+
+
+;/*****************************************************************************/
+;// Link selectors for AX reg.  AH = DYN_LINK service index, AL = link selector
+;/*****************************************************************************/
+
+CAN_API_OPEN      EQU  (CAN_API_DYN_LINK + 0)
+CAN_API_RX_FILT   EQU  (CAN_API_DYN_LINK + 1)
+CAN_API_SEND      EQU  (CAN_API_DYN_LINK + 2)
+CAN_API_RCV       EQU  (CAN_API_DYN_LINK + 3)
+CAN_API_PEEK      EQU  (CAN_API_DYN_LINK + 4)
+CAN_API_RECONFIG  EQU  (CAN_API_DYN_LINK + 5)
+CAN_API_STATUS    EQU  (CAN_API_DYN_LINK + 6)
+CAN_API_CONTROL   EQU  (CAN_API_DYN_LINK + 7)
+CAN_API_CLOSE     EQU  (CAN_API_DYN_LINK + 8)
+CAN_API_EVENT     EQU  (CAN_API_DYN_LINK + 9)
+CAN_API_CALLBACK  EQU  (CAN_API_DYN_LINK + 10)
+CAN_API_ERRORS    EQU  (CAN_API_DYN_LINK + 11)
+
+
+;// End CAN_api.def  /////////////////////////////////////////////////

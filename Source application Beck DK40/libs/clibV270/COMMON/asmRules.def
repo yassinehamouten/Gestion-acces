@@ -1,0 +1,81 @@
+;******************************************************************************
+;
+; (c) 2010 by BECK IPC GmbH
+; http://www.beck-ipc.com
+;
+;******************************************************************************
+;
+; Module:     asmRules.def
+;
+; Function:   Help assembly code sort out the memory model issues
+;
+;
+;******************************************************************************
+;
+; $Header$
+;
+;******************************************************************************
+
+false   equ     0
+true    equ     1
+
+;[]------------------------------------------------------------[]
+;|                                                              |
+;|      Conditional Assembly Directives                         |
+;|                                                              |
+;[]------------------------------------------------------------[]
+
+;memory model aliases
+
+;bit masks to extract default pointer types from MMODEL (at run-time)
+FCODE           equ     8000h
+FDATA           equ     4000h
+
+IFDEF   __SMALL__               ; Small Code - Small Data
+        LPROG           equ     false
+        LDATA           equ     false
+        MMODEL          equ     1
+        _DSSTACK_       equ     <>
+ENDIF
+
+IFDEF   __MEDIUM__              ; Large Code - Small Data
+        LPROG           equ     true
+        LDATA           equ     false
+        MMODEL          equ     FCODE+2
+        _DSSTACK_       equ     <>
+ENDIF
+
+IFDEF   __COMPACT__             ; Small Code - Large Data
+        LPROG           equ     false
+        LDATA           equ     true
+        MMODEL          equ     FDATA+3
+ENDIF
+
+IFDEF   __LARGE__               ; Large Code - Large Data
+        LPROG           equ     true
+        LDATA           equ     true
+        MMODEL          equ     FCODE+FDATA+4
+ENDIF
+
+IFDEF   __HUGE__                ; Large Code - Large Data
+        LPROG           equ     true
+        LDATA           equ     true
+        MMODEL          equ     FCODE+FDATA+5
+ENDIF
+
+;########################################
+
+IF      LPROG
+        RETADDR_DEF     equ     DD
+        DIST            equ     FAR
+ELSE
+        RETADDR_DEF     equ     DW
+        DIST            equ     NEAR
+ENDIF
+
+
+
+
+
+; End of file asmRules.def
+

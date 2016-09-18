@@ -1,0 +1,70 @@
+;******************************************************************************
+;
+; (c) 2007 by BECK IPC GmbH
+; http://www.beck-ipc.com
+;
+;******************************************************************************
+;
+; Module:     spiapi.def
+; Function:   Include file for SPI CLIB API
+;             Several constants and macros are defined here  
+;
+;
+;******************************************************************************
+;
+; $Header$
+;
+;******************************************************************************
+
+
+
+;******************************************************************************
+; Constants
+;******************************************************************************
+; Sofware interrupt number
+I2C_SPI_SWI                      EQU  0AAh
+
+; Contents of AX register for linking the resp. functions
+; These are NOT the same as for the software interrupt!
+SPI_DYN_LINK_INIT                     EQU 090h
+SPI_DYN_LINK_INIT_HW                  EQU 091h
+SPI_DYN_LINK_WRITE                    EQU 092h
+SPI_DYN_LINK_WRITE_HW                 EQU 093h
+SPI_DYN_LINK_READ                     EQU 094h
+SPI_DYN_LINK_READ_HW                  EQU 095h
+SPI_DYN_LINK_READ_WRITE               EQU 096h
+SPI_DYN_LINK_READ_WRITE_HW            EQU 097h
+SPI_DYN_LINK_SLAVE_INIT               EQU 098h
+SPI_DYN_LINK_SLAVE_WRITE              EQU 099h
+SPI_DYN_LINK_SLAVE_READ               EQU 09Ah
+SPI_DYN_LINK_SLAVE_READ_WRITE         EQU 09Bh
+SPI_DYN_LINK_WAITON_SEM               EQU 09Ch
+SPI_DYN_LINK_WAITON_SEM_SETMODE       EQU 09Dh
+SPI_DYN_LINK_RELEASE_SEM              EQU 09Eh
+SPI_DYN_LINK_WAITON_SEM_EXT           EQU 09Fh
+SPI_DYN_LINK_WAITON_SEM_SETMODE_EXT   EQU 0A0h
+
+
+
+;******************************************************************************
+; The following macro defines a 5 byte sequence of code that the Dynamic Linker
+; will replace with a FAR JMP.
+;
+; The issue here was to construct this code so that it is re-entrant during 
+; possible code modification by the run-time linker. This re-entrancy was 
+; achieved by placing only a single executable instruction within the patch
+; region.
+;******************************************************************************
+LINKER_PATCH  MACRO
+  LOCAL over_patch
+
+  JMP SHORT over_patch  ; If this instruction is started, then it will complete! 
+  NOP                   ; Never execute here 
+  NOP                   ; Never execute here
+  NOP                   ; Never execute here
+over_patch:
+ENDM
+
+
+
+; End of file

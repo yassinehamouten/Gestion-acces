@@ -1,0 +1,95 @@
+;******************************************************************************
+;
+; (c) 2006 by BECK IPC GmbH
+; http://www.beck-ipc.com
+;
+;******************************************************************************
+;
+; Module:     usb_api.def
+; Function:   Include file for USB-CLIB-API
+;             Several constants and macros are defines here  
+;
+;
+;******************************************************************************
+;
+; $Header$
+;
+;******************************************************************************
+
+
+
+;******************************************************************************
+; Constants
+;******************************************************************************
+; Sofware interrupt number
+USB_SWI           EQU  0BFh
+
+; Contents of AX register for linking the resp. functions
+USB_SERVICE_DYNAMIC_LINK                EQU 000h
+USB_SERVICE_SEND                        EQU 001h
+USB_SERVICE_FREE_RECEIVE_BUFFER         EQU 002h
+USB_SERVICE_WAKEUP                      EQU 003h
+USB_SERVICE_SOF_NOTIFY                  EQU 004h
+
+USB_SERVICE_DEVICE_INIT                 EQU 010h
+USB_SERVICE_DEVICE_DEINIT               EQU 011h
+USB_SERVICE_DEVICE_REGISTER_INTERFACE   EQU 012h
+USB_SERVICE_DEVICE_REGISTER_ALT_SETTING EQU 013h
+USB_SERVICE_DEVICE_GET_EPS              EQU 014h
+USB_SERVICE_DEVICE_CONFIG_EP            EQU 015h
+USB_SERVICE_DEVICE_ADD_SPECIFIC_DESC    EQU 016h
+USB_SERVICE_DEVICE_START                EQU 017h
+USB_SERVICE_DEVICE_STOP                 EQU 018h
+USB_SERVICE_DEVICE_STALL_EP             EQU 019h
+USB_SERVICE_DEVICE_ENABLE_EP            EQU 01Ah
+
+USB_SERVICE_HOST_INIT                   EQU 020h
+USB_SERVICE_HOST_DEINIT                 EQU 021h
+USB_SERVICE_HOST_ISSUE_TOKEN            EQU 022h
+USB_SERVICE_HOST_GET_INFO_DEVICE        EQU 023h
+USB_SERVICE_HOST_GET_N_INTERFACE        EQU 024h
+USB_SERVICE_HOST_GET_INFO_INTERFACE     EQU 025h
+USB_SERVICE_HOST_GET_N_ALT_SETTING      EQU 026h
+USB_SERVICE_HOST_GET_INFO_ALT_SETTING   EQU 027h
+USB_SERVICE_HOST_GET_N_EP               EQU 028h
+USB_SERVICE_HOST_GET_INFO_EP            EQU 029h
+
+USB_SERVICE_HOST_INIT                   EQU 020h
+USB_SERVICE_HOST_DEINIT                 EQU 021h
+USB_SERVICE_HOST_ISSUE_TOKEN            EQU 022h
+USB_SERVICE_HOST_CLEAR_QUEUE            EQU 023h
+USB_SERVICE_HOST_RESERVE_EP0            EQU 024h
+USB_SERVICE_HOST_RELEASE_EP0            EQU 025h
+USB_SERVICE_HOST_GET_DEVICE_INFO        EQU 026h
+USB_SERVICE_HOST_GET_CONFIG_INFO        EQU 027h
+USB_SERVICE_HOST_GET_INTERFACE_INFO     EQU 028h
+USB_SERVICE_HOST_GET_EP_INFO            EQU 029h
+USB_SERVICE_HOST_GET_STRING             EQU 02Ah
+USB_SERVICE_HOST_GET_STATUS             EQU 02Bh
+USB_SERVICE_HOST_SET_CLEAR_FEATURE      EQU 02Ch
+USB_SERVICE_HOST_SET_INTERFACE          EQU 02Dh
+
+
+
+;******************************************************************************
+; The following macro defines a 5 byte sequence of code that the Dynamic Linker
+; will replace with a FAR JMP.
+;
+; The issue here was to construct this code so that it is re-entrant during 
+; possible code modification by the run-time linker. This re-entrancy was 
+; achieved by placing only a single executable instruction within the patch
+; region.
+;******************************************************************************
+LINKER_PATCH  MACRO
+  LOCAL over_patch
+
+  JMP SHORT over_patch  ; If this instruction is started, then it will complete! 
+  NOP                   ; Never execute here 
+  NOP                   ; Never execute here
+  NOP                   ; Never execute here
+over_patch:
+ENDM
+
+
+
+; End of file
